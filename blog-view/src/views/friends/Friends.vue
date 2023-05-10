@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">小伙伴们</h2>
+			<h2 class="m-text-500">我的小伙伴们</h2>
 		</div>
 		<div class="ui attached segment">
 			<div class="ui link three doubling cards">
@@ -18,9 +18,9 @@
 			</div>
 		</div>
 		<!--页面描述-->
-		<div class="ui teal attached segment">
-			<div class="typo content" v-viewer v-html="info.content"></div>
-		</div>
+<!--		<div class="ui teal attached segment">-->
+<!--			<div class="typo content" v-viewer v-html="info.content"></div>-->
+<!--		</div>-->
 		<!--评论-->
 		<div class="ui bottom teal attached segment threaded comments">
 			<CommentList :page="2" :blogId="null" v-if="info.commentEnabled"/>

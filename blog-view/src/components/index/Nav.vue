@@ -9,20 +9,20 @@
 			</router-link>
 			<el-dropdown trigger="click" @command="categoryRoute">
 				<span class="el-dropdown-link item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='category'}">
-					<i class="idea icon"></i>分类<i class="caret down icon"></i>
+					<i class="idea icon"></i>博客分类<i class="caret down icon"></i>
 				</span>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item :command="category.name" v-for="(category,index) in categoryList" :key="index">{{ category.name }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
 			<router-link to="/archives" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='archives'}">
-				<i class="clone icon"></i>归档
+				<i class="clone icon"></i>时光轴
 			</router-link>
 			<router-link to="/moments" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='moments'}">
-				<i class="comment alternate outline icon"></i>动态
+				<i class="comment alternate outline icon"></i>朋友圈
 			</router-link>
 			<router-link to="/friends" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">
-				<i class="users icon"></i>友人帐
+				<i class="users icon"></i>留言板
 			</router-link>
 			<router-link to="/about" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='about'}">
 				<i class="info icon"></i>关于我
