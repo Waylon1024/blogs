@@ -256,7 +256,7 @@ INSERT INTO `site_setting` VALUES (9, 'playlistServer', '播放器平台', 'nete
 INSERT INTO `site_setting` VALUES (10, 'playlistId', '播放器歌单', '3071528549', 1);
 INSERT INTO `site_setting` VALUES (11, 'avatar', '头像', '/img/avatar.jpg', 2);
 INSERT INTO `site_setting` VALUES (12, 'name', '昵称', 'Naccl', 2);
-INSERT INTO `site_setting` VALUES (13, 'rollText', '滚动个签', '\"云鹤当归天，天不迎我妙木仙；\",\"游龙当归海，海不迎我自来也。\"', 2);
+INSERT INTO `site_setting` VALUES (13, 'rollText', '滚动个签', '\"你见过阳光下的向日葵吗\"', 2);
 INSERT INTO `site_setting` VALUES (14, 'github', 'GitHub', 'https://github.com/Naccl', 2);
 INSERT INTO `site_setting` VALUES (15, 'telegram', 'Telegram', 'https://t.me/NacclOfficial', 2);
 INSERT INTO `site_setting` VALUES (16, 'qq', 'QQ', 'http://sighttp.qq.com/authd?IDKEY=', 2);

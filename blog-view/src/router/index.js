@@ -43,7 +43,7 @@ const routes = [
 				path: '/category/:name',
 				name: 'category',
 				component: () => import('@/views/category/Category'),
-				meta: {title: '分类'}
+				meta: {title: '博客分类'}
 			},
 			{
 				path: '/moments',
