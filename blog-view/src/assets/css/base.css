@@ -109,8 +109,8 @@ footer {
 }
 
 .m-padded-tb-small {
-    padding-top: 0.5em !important;
-    padding-bottom: 0.5em !important;
+    padding-top: 1.5em !important;
+    padding-bottom: 0.1em !important;
 }
 
 .m-padded-tb-large {

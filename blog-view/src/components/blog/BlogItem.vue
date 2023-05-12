@@ -7,9 +7,7 @@
 			</div>
     <div style="display:flex;justify-content:center;flex-direction:row; ">
       <!-- 文章封面图 -->
-      <div class="ui segment"
-           :style="'background-image: url('+item.firstPicture+'); ' +
-           		 'width: 300px; height: 170px; background-size: cover; '"></div>
+      <div class="ui segment" :style="'background-image: url('+ item.firstPicture +'); ' + 'width: 300px; height: 170px; background-size: cover; '"></div>
     </div>
 			<div class="ui middle aligned mobile reversed stackable">
 				<div class="ui grid m-margin-lr">
