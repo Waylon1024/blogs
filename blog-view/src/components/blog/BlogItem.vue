@@ -5,6 +5,9 @@
 			<div class="ui large red right corner label" v-if="item.top">
 				<i class="arrow alternate circle up icon"></i>
 			</div>
+			<div class="ui segment"
+           		style="background-image: url('http://qianniu.waylon1024.cn/blog_firstPicture/sport1.jpg'); width: 300px; height: 170px; background-size: cover;background-position: center;"></div>
+
 			<div class="ui middle aligned mobile reversed stackable">
 				<div class="ui grid m-margin-lr">
 					<!--标题-->
@@ -23,10 +26,10 @@
 								<i class="small eye icon"></i><span>{{ item.views }}</span>
 							</div>
 							<div class="item m-common-black">
-								<i class="small pencil alternate icon"></i><span>字数：{{ item.words }}字</span>
+								<i class="small pencil alternate icon"></i><span>字数≈{{ item.words }}字</span>
 							</div>
 							<div class="item m-common-black">
-								<i class="small clock icon"></i><span>阅读时长：{{ item.readTime }}分钟</span>
+								<i class="small clock icon"></i><span>阅读时长≈{{ item.readTime }}分</span>
 							</div>
 						</div>
 					</div>
