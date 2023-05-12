@@ -62,6 +62,12 @@ const routes = [
 				name: 'about',
 				component: () => import('@/views/about/About'),
 				meta: {title: '关于我'}
+			},
+			{
+				path: '/blogAll',
+				name: 'blogAll',
+				component: () => import('@/views/blog/BlogAll'),
+				meta: {title: 'blogAll'}
 			}
 		]
 	}

@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<div class="ui padded attached segment m-padded-tb-large m-margin-bottom-big m-box" v-for="item in blogList" :key="item.id">
+		<div class="ui padded attached segment m-padded-tb-large m-margin-bottom-big m-box"
+         v-for="(item, index) in blogList" :key="item.id" v-if="index < num">
 			<div class="ui large red right corner label" v-if="item.top">
 				<i class="arrow alternate circle up icon"></i>
 			</div>
@@ -62,7 +63,14 @@
 				required: true
 			}
 		},
-		methods: {
+    mounted() {
+		  if (this.$route.path==='/blogAll'){
+		    this.num=5;
+      }else if (this.$route.path==='/home'){
+		    this.num=2;
+      }
+    },
+    methods: {
 			toBlog(blog) {
 				this.$store.dispatch('goBlogPage', blog)
 			}
