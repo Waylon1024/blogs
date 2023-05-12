@@ -45,8 +45,10 @@
 			<img src="/img/paper-plane.png" style="width: 40px;height: 40px;">
 		</el-backtop>
 		<!--底部footer-->
-		<Footer :siteInfo="siteInfo" :badges="badges" :newBlogList="newBlogList" :hitokoto="hitokoto"/>
-	</div>
+<!--		<Footer :siteInfo="siteInfo" :badges="badges" :newBlogList="newBlogList" :hitokoto="hitokoto"/>-->
+    <Footer :siteInfo="siteInfo" :newBlogList="newBlogList" :hitokoto="hitokoto"/>
+
+  </div>
 </template>
 
 <script>
@@ -76,7 +78,7 @@
 				categoryList: [],
 				tagList: [],
 				randomBlogList: [],
-				badges: [],
+				// badges: [],
 				newBlogList: [],
 				hitokoto: {},
 			}
@@ -108,7 +110,7 @@
 				getSite().then(res => {
 					if (res.code === 200) {
 						this.siteInfo = res.data.siteInfo
-						this.badges = res.data.badges
+						// this.badges = res.data.badges
 						this.newBlogList = res.data.newBlogList
 						this.categoryList = res.data.categoryList
 						this.tagList = res.data.tagList

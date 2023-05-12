@@ -27,10 +27,10 @@
 								<i class="small eye icon"></i><span>{{ item.views }}</span>
 							</div>
 							<div class="item m-common-black">
-								<i class="small pencil alternate icon"></i><span>字数≈{{ item.words }}字</span>
+								<i class="small pencil alternate icon"></i><span>字数：{{ item.words }}字</span>
 							</div>
 							<div class="item m-common-black">
-								<i class="small clock icon"></i><span>阅读时长≈{{ item.readTime }}分</span>
+								<i class="small clock icon"></i><span>阅读时长：{{ item.readTime }}分钟</span>
 							</div>
 						</div>
 					</div>
