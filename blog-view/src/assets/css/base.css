@@ -323,6 +323,12 @@ footer {
     animation: sun 8s infinite;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @keyframes sun {
     100% {
         background-position: -400% 0;
