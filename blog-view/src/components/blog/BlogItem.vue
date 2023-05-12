@@ -5,7 +5,7 @@
 			<div class="ui large red right corner label" v-if="item.top">
 				<i class="arrow alternate circle up icon"></i>
 			</div>
-    <div style="display:flex;justify-content:center;flex-direction:row; ">
+    <div v-if="item.firstPicture" style="display:flex;justify-content:center;flex-direction:row; ">
       <!-- 文章封面图 -->
       <div class="ui segment" :style="'background-image: url('+ item.firstPicture +'); ' + 'width: 300px; height: 170px; background-size: cover; '"></div>
     </div>
