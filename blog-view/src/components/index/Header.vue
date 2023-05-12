@@ -3,8 +3,6 @@
 		<div class="view">
 			<img ref="imgbg1" :src="defaultSettings.bg1" style="display: none;">
 			<div class="bg1" :style="{backgroundImage:'url('+defaultSettings.bg1+')'}"></div>
-			<div class="bg2" :style="{backgroundImage:'url('+defaultSettings.bg2+')'}"></div>
-			<div class="bg3" :style="{backgroundImage:'url('+defaultSettings.bg3+')'}" v-show="loaded"></div>
 		</div>
 		<div class="text-malfunction" :data-word="defaultSettings.malfunctionText">
 			{{ defaultSettings.malfunctionText }}
@@ -58,7 +56,7 @@
 				header.style.setProperty('--percentage', 0.5)
 			})
 			header.addEventListener('mousemove', (e) => {
-				let percentage = (e.clientX - startingPoint) / window.outerWidth + 0.5
+				let percentage = (e.clientX - startingPoint) / window.outerWidth + 0.05
 				header.style.setProperty('--percentage', percentage)
 				header.classList.add('moving')
 			})
