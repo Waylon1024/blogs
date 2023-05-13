@@ -159,23 +159,15 @@
     methods: {
       handleFileUpload() {
         const file = this.$refs.fileInput.files[0];
+        if (!file) {
+          // 文件为空，不进行上传操作，避免出现异常
+          return;
+        }
         const formData = new FormData();
         formData.append('formData', file);
         saveFirsrPicture(formData).then(res => {
           this.imageUrl = "http://qianniu.waylon1024.cn/blog_firstPicture/" + res.data
         });
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
       },
 			getData() {
 				getCategoryAndTag().then(res => {
