@@ -7,12 +7,19 @@
 						<el-input v-model="form.title" placeholder="请输入标题"></el-input>
 					</el-form-item>
 				</el-col>
-				<el-col :span="12">
-					<el-form-item label="文章首图URL" prop="firstPicture">
-						<el-input v-model="form.firstPicture" placeholder="文章首图，用于随机文章展示"></el-input>
-					</el-form-item>
-				</el-col>
 			</el-row>
+
+      <el-form-item label="文章预览图（jpg、png且大小 <= 2MB）" prop="firstPicture">
+        <el-upload
+            class="avatar-uploader"
+            action="http://localhost:8090/admin/blog/savePicture"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
 
 			<el-form-item label="文章描述" prop="description">
 				<mavon-editor v-model="form.description"/>
@@ -111,6 +118,7 @@
 		components: {Breadcrumb},
 		data() {
 			return {
+        imageUrl: '',
 				categoryList: [],
 				tagList: [],
 				dialogVisible: false,
@@ -134,7 +142,7 @@
 				},
 				formRules: {
 					title: [{required: true, message: '请输入标题', trigger: 'change'}],
-					firstPicture: [{required: true, message: '请输入首图链接', trigger: 'change'}],
+					// firstPicture: [{required: true, message: '请', trigger: 'change'}],
 					cate: [{required: true, message: '请选择分类', trigger: 'change'}],
 					tagList: [{required: true, message: '请选择标签', trigger: 'change'}],
 					words: [{required: true, message: '请输入文章字数', trigger: 'change'}],
@@ -152,7 +160,22 @@
 				this.getBlog(this.$route.params.id)
 			}
 		},
-		methods: {
+    methods: {
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isImage = /\.(jpg|jpeg|png)$/.test(file.type.toLowerCase());
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isImage) {
+          this.$message.error('上传头像图片只能是 JPG、JPEG 或 PNG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isImage && isLt2M;
+      },
 			getData() {
 				getCategoryAndTag().then(res => {
 					this.categoryList = res.data.categories
@@ -174,9 +197,9 @@
 				})
 			},
 			submit() {
-				if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
-					return this.msgError("密码保护模式必须填写密码！")
-				}
+				// if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
+				// 	return this.msgError("密码保护模式必须填写密码！")
+				// }
 				this.$refs.formRef.validate(valid => {
 					if (valid) {
 						if (this.radio === 2) {
@@ -215,5 +238,30 @@
 </script>
 
 <style scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
 
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

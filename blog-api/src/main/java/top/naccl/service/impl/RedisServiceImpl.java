@@ -142,4 +142,9 @@ public class RedisServiceImpl implements RedisService {
 	public void expire(String key, long time) {
 		jsonRedisTemplate.expire(key, time, TimeUnit.SECONDS);
 	}
+
+	@Override
+	public void saveFirstPicture(String key, String filename) {
+		jsonRedisTemplate.opsForSet().add(key, filename);
+	}
 }

@@ -12,24 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.JedisPool;
 import top.naccl.annotation.OperationLogger;
+import top.naccl.constant.RedisKeyConstants;
 import top.naccl.entity.Blog;
 import top.naccl.entity.Category;
 import top.naccl.entity.Tag;
 import top.naccl.entity.User;
 import top.naccl.model.dto.BlogVisibility;
 import top.naccl.model.vo.Result;
-import top.naccl.service.BlogService;
-import top.naccl.service.CategoryService;
-import top.naccl.service.CommentService;
-import top.naccl.service.TagService;
+import top.naccl.service.*;
 import top.naccl.util.StringUtils;
+import top.naccl.util.upload.QiniuUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: 博客文章后台管理
@@ -47,6 +44,9 @@ public class BlogAdminController {
 	TagService tagService;
 	@Autowired
 	CommentService commentService;
+
+	@Autowired
+	RedisService redisService;
 
 	/**
 	 * 获取博客文章列表
@@ -168,6 +168,30 @@ public class BlogAdminController {
 		return getResult(blog, "save");
 	}
 
+	// 图片上传
+	@OperationLogger("保存预览图")
+	@PostMapping("/blog/savePicture")
+	public Result upload(@RequestParam("file") MultipartFile file) {
+		try {
+			// 获取原始文件名
+			String originalFilename = file.getOriginalFilename();
+			int lastIndexOf = originalFilename.lastIndexOf("."); // 因为不止有一个点 .
+			// 获取文件后缀
+			String suffix = originalFilename.substring(lastIndexOf - 1);
+			// 使用UUID随机生成文件名称，防止同名文件覆盖
+			String fileName = UUID.randomUUID().toString() + suffix;
+			// 上传到七牛云服务器
+			QiniuUtils.upload2Qiniu(file.getBytes(), fileName);
+//			 将上传图片名称存入到redis
+			redisService.saveFirstPicture(RedisKeyConstants.ALL_FIRST_PICTURE, fileName);
+			return Result.ok("上传成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 图片上传失败
+			return Result.error("上传失败");
+		}
+	}
+
 	/**
 	 * 更新博客
 	 *
@@ -251,7 +275,9 @@ public class BlogAdminController {
 			User user = new User();
 			user.setId(1L);//个人博客默认只有一个作者
 			blog.setUser(user);
-
+			// 将预览图上传到七牛云
+			System.out.println(blog);
+			System.out.println("3121111111111111111111111111111111111");
 			blogService.saveBlog(blog);
 			//关联博客和标签(维护 blog_tag 表)
 			for (Tag t : tags) {
