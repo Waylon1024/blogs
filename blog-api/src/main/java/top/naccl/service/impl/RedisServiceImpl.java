@@ -10,6 +10,7 @@ import top.naccl.util.JacksonUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,6 +48,7 @@ public class RedisServiceImpl implements RedisService {
 	public Map getMapByHash(String hash) {
 		return jsonRedisTemplate.opsForHash().entries(hash);
 	}
+
 
 	@Override
 	public Object getValueByHashKey(String hash, Object key) {
@@ -147,4 +149,20 @@ public class RedisServiceImpl implements RedisService {
 	public void saveFirstPicture(String key, String filename) {
 		jsonRedisTemplate.opsForSet().add(key, filename);
 	}
+
+    @Override
+    public void saveEffectFirstPicture(String key, String filename) {
+        jsonRedisTemplate.opsForSet().add(key, filename);
+    }
+
+	@Override
+	public Set<String> getFirstPicture(String key) {
+		return jsonRedisTemplate.opsForSet().members(key);
+	}
+
+	@Override
+	public Set<String> getDiff(String allFirstPicture, String effectFirstPicture) {
+		return jsonRedisTemplate.opsForSet().difference(allFirstPicture,effectFirstPicture);
+	}
+
 }

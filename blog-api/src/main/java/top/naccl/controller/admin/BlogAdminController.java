@@ -169,23 +169,24 @@ public class BlogAdminController {
 		return getResult(blog, "save");
 	}
 
-	// 图片上传
-	@OperationLogger("保存预览图")
-	@PostMapping("/blog/savePicture")
-	public Result upload(@RequestParam("formData") MultipartFile file) throws IOException {
-		// 获取原始文件名
-		String originalFilename = file.getOriginalFilename();
-		int lastIndexOf = originalFilename.lastIndexOf("."); // 因为不止有一个点 .
-		// 获取文件后缀
-		String suffix = originalFilename.substring(lastIndexOf - 1);
-		// 使用UUID随机生成文件名称，防止同名文件覆盖
-		String fileName = UUID.randomUUID().toString() + suffix;
-		// 上传到七牛云服务器
-		QiniuUtils.upload2Qiniu(file.getBytes(), fileName);
-		//	 将上传图片名称存入到redis
-		redisService.saveFirstPicture(RedisKeyConstants.ALL_FIRST_PICTURE, fileName);
-		return Result.ok("上传成功", fileName);
-	}
+    // 图片上传
+    @OperationLogger("保存预览图")
+    @PostMapping("/blog/savePicture")
+    public Result upload(@RequestParam("formData") MultipartFile file) throws IOException {
+        // 获取原始文件名
+        String originalFilename = file.getOriginalFilename();
+        int lastIndexOf = originalFilename.lastIndexOf("."); // 因为不止有一个点 .
+        // 获取文件后缀
+        String suffix = originalFilename.substring(lastIndexOf - 1);
+        // 使用UUID随机生成文件名称，防止同名文件覆盖
+        String fileName = UUID.randomUUID().toString() + suffix;
+        // 上传到七牛云服务器
+        QiniuUtils.upload2Qiniu(file.getBytes(), fileName);
+        //	 将上传图片名称存入到redis
+        String fullName = "http://qianniu.waylon1024.cn/blog_firstPicture/" + fileName;
+        redisService.saveFirstPicture(RedisKeyConstants.ALL_FIRST_PICTURE, fullName);
+        return Result.ok("上传成功", fileName);
+    }
 
 	/**
 	 * 更新博客
@@ -257,37 +258,36 @@ public class BlogAdminController {
 			}
 		}
 
-		Date date = new Date();
-		if (blog.getReadTime() == null || blog.getReadTime() < 0) {
-			blog.setReadTime((int) Math.round(blog.getWords() / 200.0));//粗略计算阅读时长
-		}
-		if (blog.getViews() == null || blog.getViews() < 0) {
-			blog.setViews(0);
-		}
-		if ("save".equals(type)) {
-			blog.setCreateTime(date);
-			blog.setUpdateTime(date);
-			User user = new User();
-			user.setId(1L);//个人博客默认只有一个作者
-			blog.setUser(user);
-			// 将预览图上传到七牛云
-			System.out.println(blog);
-			System.out.println("3121111111111111111111111111111111111");
-			blogService.saveBlog(blog);
-			//关联博客和标签(维护 blog_tag 表)
-			for (Tag t : tags) {
-				blogService.saveBlogTag(blog.getId(), t.getId());
-			}
-			return Result.ok("添加成功");
-		} else {
-			blog.setUpdateTime(date);
-			blogService.updateBlog(blog);
-			//关联博客和标签(维护 blog_tag 表)
-			blogService.deleteBlogTagByBlogId(blog.getId());
-			for (Tag t : tags) {
-				blogService.saveBlogTag(blog.getId(), t.getId());
-			}
-			return Result.ok("更新成功");
-		}
-	}
+        Date date = new Date();
+        if (blog.getReadTime() == null || blog.getReadTime() < 0) {
+            blog.setReadTime((int) Math.round(blog.getWords() / 200.0));//粗略计算阅读时长
+        }
+        if (blog.getViews() == null || blog.getViews() < 0) {
+            blog.setViews(0);
+        }
+        if ("save".equals(type)) {
+            blog.setCreateTime(date);
+            blog.setUpdateTime(date);
+            User user = new User();
+            user.setId(1L);//个人博客默认只有一个作者
+            blog.setUser(user);
+            // 图片名称保存到redis的effectiveFirstPicture中
+            redisService.saveEffectFirstPicture(RedisKeyConstants.EFFECT_FIRST_PICTURE, blog.getFirstPicture());
+            blogService.saveBlog(blog);
+            //关联博客和标签(维护 blog_tag 表)
+            for (Tag t : tags) {
+                blogService.saveBlogTag(blog.getId(), t.getId());
+            }
+            return Result.ok("添加成功");
+        } else {
+            blog.setUpdateTime(date);
+            blogService.updateBlog(blog);
+            //关联博客和标签(维护 blog_tag 表)
+            blogService.deleteBlogTagByBlogId(blog.getId());
+            for (Tag t : tags) {
+                blogService.saveBlogTag(blog.getId(), t.getId());
+            }
+            return Result.ok("更新成功");
+        }
+    }
 }

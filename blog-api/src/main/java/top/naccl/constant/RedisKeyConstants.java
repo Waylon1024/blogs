@@ -56,4 +56,9 @@ public class RedisKeyConstants {
 	 * 所有文章预览图key
 	 */
 	public static final String ALL_FIRST_PICTURE = "allFirstPicture";
+
+	/**
+	 * 有效文章预览图key
+	 */
+	public static final String EFFECT_FIRST_PICTURE = "effectiveFirstPicture";
 }

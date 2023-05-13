@@ -5,6 +5,7 @@ import top.naccl.model.vo.PageResult;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface RedisService {
 	PageResult<BlogInfo> getBlogInfoPageResultByHash(String hash, Integer pageNum);
@@ -49,5 +50,15 @@ public interface RedisService {
 
 	void expire(String key, long time);
 
+	// 保存所有预览图到redis
 	void saveFirstPicture(String key,String filename);
+
+	// 保存有效的预览图到redis
+    void saveEffectFirstPicture(String key, String filename);
+
+    // 获取set中的value值
+	Set<String> getFirstPicture(String key);
+
+	// 获取两个key的差集
+	Set<String> getDiff(String allFirstPicture, String effectFirstPicture);
 }
