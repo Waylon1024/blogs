@@ -45,7 +45,7 @@ public class Result {
 	}
 
 	public static Result error() {
-		return new Result(500, "异常错误");
+		return new Result(500, "异常错误1");
 	}
 
 	public static Result create(Integer code, String msg, Object data) {

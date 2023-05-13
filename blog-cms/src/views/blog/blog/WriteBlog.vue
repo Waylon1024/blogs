@@ -10,15 +10,11 @@
 			</el-row>
 
       <el-form-item label="文章预览图（jpg、png且大小 <= 2MB）" prop="firstPicture">
-        <el-upload
-            class="avatar-uploader"
-            action="http://localhost:8090/admin/blog/savePicture"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+        <label for="fileInput" class="upload-btn">上传图片</label>
+        <input type="file" id="fileInput" name="formData" ref="fileInput" @change="handleFileUpload"/>
+        <div v-if="imageUrl">
+          <img :src="imageUrl" class="preview-img">
+        </div>
       </el-form-item>
 
 			<el-form-item label="文章描述" prop="description">
@@ -111,7 +107,7 @@
 
 <script>
 	import Breadcrumb from "@/components/Breadcrumb";
-	import {getCategoryAndTag, saveBlog, getBlogById, updateBlog} from '@/api/blog'
+  import {getCategoryAndTag, saveBlog, getBlogById, updateBlog,saveFirsrPicture} from '@/api/blog'
 
 	export default {
 		name: "WriteBlog",
@@ -161,8 +157,13 @@
 			}
 		},
     methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+      handleFileUpload() {
+        const file = this.$refs.fileInput.files[0];
+        const formData = new FormData();
+        formData.append('formData', file);
+        saveFirsrPicture(formData).then(res => {
+          this.imageUrl = "http://qianniu.waylon1024.cn/blog_firstPicture/" + res.data
+        });
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -222,6 +223,7 @@
 								this.$router.push('/blog/list')
 							})
 						} else {
+						  this.form.firstPicture=
 							saveBlog(this.form).then(res => {
 								this.msgSuccess(res.msg)
 								this.$router.push('/blog/list')
@@ -238,30 +240,29 @@
 </script>
 
 <style scoped>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.upload-btn {
+  background-color: #409eff;
+  color: #fff;
+  border-radius: 4px;
+  padding: 10px 20px;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
 }
 
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+.upload-btn:hover {
+  background-color: #66b1ff;
 }
 
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+.preview-img {
+  max-width: 35%;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
 }
 </style>

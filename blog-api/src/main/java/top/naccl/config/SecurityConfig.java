@@ -47,8 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				//基于Token，不创建会话
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
+				//放行上传文章预览图的请求
+//				.antMatchers("/admin/blog/savePicture").permitAll()
 				//放行获取网页标题后缀的请求
-				.antMatchers("/admin/blog/savePicture").permitAll()
 				.antMatchers("/admin/webTitleSuffix").permitAll()
 				//任何 /admin 开头的路径下的请求都需要经过JWT验证
 				.antMatchers(HttpMethod.GET, "/admin/**").hasAnyRole("admin", "visitor")

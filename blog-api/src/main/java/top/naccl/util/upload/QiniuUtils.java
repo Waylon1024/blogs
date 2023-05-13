@@ -50,7 +50,6 @@ public class QiniuUtils {
         Configuration cfg = new Configuration(Region.autoRegion());
         //...其他参数参考类注释
         UploadManager uploadManager = new UploadManager(cfg);
-
         //指定保存到blog_firstPicture文件夹下
         String key = "blog_firstPicture/" + fileName;
         Auth auth = Auth.create(accessKey, secretKey);
@@ -59,8 +58,6 @@ public class QiniuUtils {
             Response response = uploadManager.put(bytes, key, upToken);
             //解析上传成功的结果
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-            System.out.println(putRet.key);
-            System.out.println(putRet.hash);
         } catch (QiniuException ex) {
             Response r = ex.response;
             System.err.println(r.toString());

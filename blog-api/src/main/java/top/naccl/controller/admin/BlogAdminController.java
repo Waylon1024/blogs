@@ -26,6 +26,7 @@ import top.naccl.service.*;
 import top.naccl.util.StringUtils;
 import top.naccl.util.upload.QiniuUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -171,25 +172,19 @@ public class BlogAdminController {
 	// 图片上传
 	@OperationLogger("保存预览图")
 	@PostMapping("/blog/savePicture")
-	public Result upload(@RequestParam("file") MultipartFile file) {
-		try {
-			// 获取原始文件名
-			String originalFilename = file.getOriginalFilename();
-			int lastIndexOf = originalFilename.lastIndexOf("."); // 因为不止有一个点 .
-			// 获取文件后缀
-			String suffix = originalFilename.substring(lastIndexOf - 1);
-			// 使用UUID随机生成文件名称，防止同名文件覆盖
-			String fileName = UUID.randomUUID().toString() + suffix;
-			// 上传到七牛云服务器
-			QiniuUtils.upload2Qiniu(file.getBytes(), fileName);
-//			 将上传图片名称存入到redis
-			redisService.saveFirstPicture(RedisKeyConstants.ALL_FIRST_PICTURE, fileName);
-			return Result.ok("上传成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			// 图片上传失败
-			return Result.error("上传失败");
-		}
+	public Result upload(@RequestParam("formData") MultipartFile file) throws IOException {
+		// 获取原始文件名
+		String originalFilename = file.getOriginalFilename();
+		int lastIndexOf = originalFilename.lastIndexOf("."); // 因为不止有一个点 .
+		// 获取文件后缀
+		String suffix = originalFilename.substring(lastIndexOf - 1);
+		// 使用UUID随机生成文件名称，防止同名文件覆盖
+		String fileName = UUID.randomUUID().toString() + suffix;
+		// 上传到七牛云服务器
+		QiniuUtils.upload2Qiniu(file.getBytes(), fileName);
+		//	 将上传图片名称存入到redis
+		redisService.saveFirstPicture(RedisKeyConstants.ALL_FIRST_PICTURE, fileName);
+		return Result.ok("上传成功", fileName);
 	}
 
 	/**

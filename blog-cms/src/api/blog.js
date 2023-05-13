@@ -69,6 +69,14 @@ export function updateVisibility(id, form) {
 	})
 }
 
+export function saveFirsrPicture(formData) {
+	return axios.post('/blog/savePicture', formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		}
+	});
+}
+
 export function getBlogById(id) {
 	return axios({
 		url: 'blog',
