@@ -52,7 +52,7 @@
 </template>
 
 <script>
-	import {getHitokoto, getSite} from '@/api/index'
+	import {getSentence, getSite} from '@/api/index'
 	import Nav from "@/components/index/Nav";
 	import Header from "@/components/index/Header";
 	import Footer from "@/components/index/Footer";
@@ -80,7 +80,12 @@
 				randomBlogList: [],
 				// badges: [],
 				newBlogList: [],
-				hitokoto: {},
+        hitokoto: {
+          creator: '',
+          type: '',
+          content: '',
+          source: ''
+        }
 			}
 		},
 		computed: {
@@ -94,7 +99,7 @@
 		},
 		created() {
 			this.getSite()
-			this.getHitokoto()
+			this.getSentence()
 			//从localStorage恢复之前的评论信息
 			this.$store.commit(RESTORE_COMMENT_FORM)
 		},
@@ -122,10 +127,10 @@
 				})
 			},
 			//获取一言
-			getHitokoto() {
-				getHitokoto().then(res => {
-					this.hitokoto = res
-				})
+      getSentence() {
+        getSentence().then(res => {
+					this.hitokoto = res.data[0]
+        })
 			}
 		}
 	}

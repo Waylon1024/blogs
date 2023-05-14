@@ -1,8 +1,8 @@
 import axios from '@/plugins/axios'
 
-export function getHitokoto() {
+export function getSentence() {
 	return axios({
-		url: 'https://v1.hitokoto.cn/?c=a',
+		url: 'getSentence',
 		method: 'GET'
 	})
 }
