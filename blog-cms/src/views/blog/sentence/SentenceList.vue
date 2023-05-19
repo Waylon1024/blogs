@@ -61,8 +61,7 @@
 
         <el-form-item label="美文类型" prop="type">
           <el-select v-model="editForm.type" placeholder="请选择类型" :clearable="true" style="width: 100%">
-            <el-option v-for="type in typeList" :key="type" :label="type" :value="type">
-            </el-option>
+            <el-option v-for="type in typeList" :key="type" :label="typeLabel(type)" :value="type"></el-option>
           </el-select>
         </el-form-item>
 
@@ -198,6 +197,18 @@ export default {
     }
   },
   computed:{
+    typeLabel(){
+      return(type)=>{
+        switch (type){
+          case 1: return '诗词';
+          case 2: return 'XX';
+          case 3: return 'XX';
+          case 4: return 'XX';
+          case 5: return '自创';
+          default: return '';
+        }
+      }
+    },
   }
 }
 </script>
