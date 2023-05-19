@@ -94,6 +94,12 @@ const routes = [
 				component: () => import('@/views/blog/comment/CommentList'),
 				meta: {title: '评论管理', icon: 'el-icon-s-comment'}
 			},
+			{
+				path: 'sentence/list',
+				name: 'SentenceList',
+				component: () => import('@/views/blog/sentence/SentenceList'),
+				meta: {title: '美文管理', icon: 'sentence'}
+			},
 		]
 	},
 	{

@@ -1,0 +1,29 @@
+import axios from '@/util/request'
+
+export function getData(queryInfo) {
+    return axios({
+        url: 'sentences',
+        method: 'GET',
+        params: {
+            ...queryInfo
+        }
+    })
+}
+
+export function getType() {
+    return axios({
+        url: 'sentencesTypeList',
+        method: 'GET',
+    })
+}
+
+
+export function editSentence(form) {
+    return axios({
+        url: 'editSentence',
+        method: 'PUT',
+        data: {
+            ...form
+        }
+    })
+}

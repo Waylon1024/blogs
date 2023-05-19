@@ -11,4 +11,16 @@
     <select id="getSentence" resultMap="sentence">
         SELECT * FROM sentence ORDER BY RAND() LIMIT 1;
     </select>
+
+    <select id="getSentencesList" resultMap="sentence">
+        select * from sentence;
+    </select>
+
+    <select id="getSentencesTypeList" resultType="java.lang.Integer">
+        select distinct type from sentence order by type asc ;
+    </select>
+
+    <update id="editSentence">
+        update sentence set type=#{type},content=#{content},source=#{source} where id=#{id}
+    </update>
 </mapper>

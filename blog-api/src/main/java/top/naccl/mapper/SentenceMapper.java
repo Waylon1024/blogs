@@ -16,4 +16,11 @@ import java.util.List;
 public interface SentenceMapper {
 
     List<Sentence> getSentence();
+
+    List<Sentence> getSentencesList();
+
+    List<Integer> getSentencesTypeList();
+
+    int editSentence(Sentence sentence);
 }
+
