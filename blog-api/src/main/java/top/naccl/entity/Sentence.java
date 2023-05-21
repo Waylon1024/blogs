@@ -15,6 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Sentence {
+    private Integer id;
     private String creator = "Waylon";
     private Integer type;
     private String content;
