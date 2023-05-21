@@ -50,10 +50,14 @@
 
       <el-table-column label="操作">
         <template v-slot="scope">
+          <!--编辑-->
           <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row)">编辑</el-button>
-          <el-popconfirm title="确定删除吗？" icon="el-icon-delete" iconColor="red" @onConfirm="deleteTagById(scope.row.id)">
+
+          <!--删除-->
+          <el-popconfirm title="确定删除吗？" icon="el-icon-delete" iconColor="red" @onConfirm="deleteSentenceById(scope.row.id)">
             <el-button size="mini" type="danger" icon="el-icon-delete" slot="reference">删除</el-button>
           </el-popconfirm>
+
         </template>
       </el-table-column>
     </el-table>
@@ -126,7 +130,7 @@
 </template>
 
 <script>
-import {getData, getType, editSentence, addSingleSentence, addExcelSentence} from '@/api/sentence'
+import {getData, getType, editSentence, addSingleSentence, addExcelSentence, deleteSentenceById} from '@/api/sentence'
 import * as XLSX from "xlsx";
 
 export default {
@@ -146,6 +150,7 @@ export default {
       addDialogVisible: false,
       editDialogVisible: false,
       addForm: {
+        id: '',
         type: '',
         content: '',
         source: '',
@@ -247,9 +252,10 @@ export default {
       this.editForm = {...row}
       this.editDialogVisible = true
     },
-    // 根据id删除对应东风美文
-    deleteTagById(id) {
-      deleteTagById(id).then(res => {
+
+    // 根据id删除对应的美文
+    deleteSentenceById(id) {
+      deleteSentenceById(id).then(res => {
         this.msgSuccess(res.msg)
         this.getData()
       })

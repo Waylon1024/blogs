@@ -43,4 +43,8 @@ public class SentenceService {
     public Integer addExcelSentence(ArrayList<Sentence> sentenceList) {
         return sentenceMapper.addExcelSentence(sentenceList);
     }
+
+    public Integer deleteSentenceById(Long id) {
+        return sentenceMapper.deleteSentenceById(id);
+    }
 }

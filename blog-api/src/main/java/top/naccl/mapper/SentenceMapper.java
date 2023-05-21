@@ -28,5 +28,7 @@ public interface SentenceMapper {
     int addSingleSentence(Sentence sentence);
 
     Integer addExcelSentence(ArrayList<Sentence> sentenceList);
+
+    Integer deleteSentenceById(Long id);
 }
 

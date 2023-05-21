@@ -19,6 +19,9 @@
             (#{sentenceList.type}, #{sentenceList.content}, #{sentenceList.source}, now(), now())
         </foreach>
     </insert>
+    <delete id="deleteSentenceById">
+        delete from sentence where id = #{id}
+    </delete>
 
     <select id="getSentence" resultMap="sentence">
         SELECT * FROM sentence ORDER BY RAND() LIMIT 1;

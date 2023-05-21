@@ -103,4 +103,18 @@ public class SentencenAdminController {
         return Result.ok("批量添加成功");
     }
 
+    /**
+     * 根据id删除美文
+     *
+     * @return
+     */
+    @OperationLogger("根据id删除美文")
+    @DeleteMapping("/deleteSentenceById")
+    public Result deleteSentenceById(@RequestParam Long id) {
+        Integer integer = sentenceService.deleteSentenceById(id);
+        if (integer == 0){
+            return Result.error("删除美文失败");
+        }
+        return Result.ok("成功删除美文");
+    }
 }

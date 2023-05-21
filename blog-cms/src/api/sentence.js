@@ -28,15 +28,16 @@ export function editSentence(form) {
     })
 }
 
-export function addSingleSentence(form){
+export function addSingleSentence(form) {
     return axios({
         url: 'addSingleSentence',
         method: 'POST',
-        data:{
+        data: {
             ...form
         }
     })
 }
+
 export function addExcelSentence(sentenceList) {
     return axios({
         url: 'addExcelSentence',
@@ -45,3 +46,12 @@ export function addExcelSentence(sentenceList) {
     });
 }
 
+export function deleteSentenceById(id) {
+    return axios({
+        url: 'deleteSentenceById',
+        method: 'DELETE',
+        params: {
+            id,
+        }
+    })
+}
