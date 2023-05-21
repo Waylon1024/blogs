@@ -12,6 +12,14 @@
         insert into sentence (type, content, source, create_time, update_time) values (#{type}, #{content}, #{source}, now(), now())
     </insert>
 
+    <insert id="addExcelSentence" parameterType="java.util.ArrayList">
+        insert into sentence (type, content, source, create_time, update_time)
+        values
+        <foreach collection="list" item="sentenceList" separator=",">
+            (#{sentenceList.type}, #{sentenceList.content}, #{sentenceList.source}, now(), now())
+        </foreach>
+    </insert>
+
     <select id="getSentence" resultMap="sentence">
         SELECT * FROM sentence ORDER BY RAND() LIMIT 1;
     </select>

@@ -2,6 +2,7 @@ package top.naccl.controller.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.naccl.annotation.OperationLogger;
@@ -10,6 +11,7 @@ import top.naccl.model.vo.Result;
 import top.naccl.service.SentenceService;
 import top.naccl.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -83,6 +85,22 @@ public class SentencenAdminController {
             return Result.error("美文插入失败");
         }
         return Result.ok("美文插入成功");
+    }
+
+    /**
+     * 批量添加美文
+     *
+     * @param sentenceList
+     * @return
+     */
+    @OperationLogger("批量添加美文")
+    @PostMapping("/addExcelSentence")
+    public Result addExcelSentence(@RequestBody ArrayList<Sentence> sentenceList) {
+        Integer integer = sentenceService.addExcelSentence(sentenceList);
+        if (integer == 0) {
+            return Result.error("批量添加失败");
+        }
+        return Result.ok("批量添加成功");
     }
 
 }

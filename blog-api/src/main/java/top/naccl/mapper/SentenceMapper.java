@@ -1,9 +1,11 @@
 package top.naccl.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import top.naccl.entity.Sentence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,5 +26,7 @@ public interface SentenceMapper {
     int editSentence(Sentence sentence);
 
     int addSingleSentence(Sentence sentence);
+
+    Integer addExcelSentence(ArrayList<Sentence> sentenceList);
 }
 

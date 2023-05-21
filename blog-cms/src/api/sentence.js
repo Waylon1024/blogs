@@ -37,3 +37,11 @@ export function addSingleSentence(form){
         }
     })
 }
+export function addExcelSentence(sentenceList) {
+    return axios({
+        url: 'addExcelSentence',
+        method: 'POST',
+        data: sentenceList
+    });
+}
+

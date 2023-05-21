@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import top.naccl.entity.Sentence;
 import top.naccl.mapper.SentenceMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,5 +38,9 @@ public class SentenceService {
 
     public Integer addSingleSentence(Sentence sentence) {
         return sentenceMapper.addSingleSentence(sentence);
+    }
+
+    public Integer addExcelSentence(ArrayList<Sentence> sentenceList) {
+        return sentenceMapper.addExcelSentence(sentenceList);
     }
 }

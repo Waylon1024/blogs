@@ -1,9 +1,39 @@
 <template>
   <div>
-    <!--添加-->
     <el-row :gutter="10">
-      <el-col :span="6">
-        <el-button type="primary" size="small" icon="el-icon-plus" @click="addDialogVisible=true">单条添加美文</el-button>
+
+      <!--单条添加-->
+      <el-col :span="2">
+        <el-button type="primary" size="small" icon="el-icon-plus" @click="addDialogVisible=true">单条添加</el-button>
+      </el-col>
+
+      <!--批量添加-->
+      <el-col :span="3.5">
+        <el-upload
+            class="upload-demo"
+            ref="upload"
+            action="#"
+            :http-request="importFile"
+            :before-upload="beforeAvatarUpload"
+            :auto-upload="false"
+            :limit="1"
+            accept=".xls,.xlsx,.csv"
+            :on-exceed="handleExceed">
+
+          <el-button slot="trigger" type="primary" size="small">批量添加</el-button>
+
+          <el-button
+              :loading="dataForms.loading"
+              style="margin-left: 10px"
+              type="success"
+              @click="fileSubmit"
+              size="small"
+              v-loading.fullscreen.lock="fullscreenLoading"
+              element-loading-text="正在执行..."
+              element-loading-spinner="el-icon-loading"
+              element-loading-background="rgba(0, 0, 0, 0.8)">确定添加
+          </el-button>
+        </el-upload>
       </el-col>
     </el-row>
 
@@ -88,13 +118,12 @@
 </template>
 
 <script>
-import Breadcrumb from "@/components/Breadcrumb";
-import {getData,getType,editSentence,addSingleSentence} from '@/api/sentence'
+import {getData, getType, editSentence, addSingleSentence, addExcelSentence} from '@/api/sentence'
+import * as XLSX from "xlsx";
 
 export default {
   name: "SentenceList",
   components: {
-    Breadcrumb
   },
   data() {
     return {
@@ -120,6 +149,13 @@ export default {
             {required: true, message: '请输入美文内容', trigger: 'blur'},
         ]
       },
+      // 批量添加
+      dataForms: {
+        barCode: "",
+        loading: false,
+      },
+      fullscreenLoading: false, // 加载中
+      loadingText: "正在上传...",
     }
   },
   created() {
@@ -199,7 +235,115 @@ export default {
         this.msgSuccess(res.msg)
         this.getData()
       })
-    }
+    },
+
+    fileSubmit() {
+      //没有选取文件弹出提醒
+      if (this.$refs.upload.uploadFiles.length < 1) {
+        this.$message.warning("请先选择一个文件");
+      } else {
+        //否则提交
+        this.$refs.upload.submit();
+      }
+    },
+
+    //上传文件前的钩子，file是文件
+    beforeAvatarUpload(file) {
+      //拿到文件大小是否小于10
+      const isLt10M = file.size / 1024 / 1024 < 10;
+      //不小于10提醒过大
+      if (!isLt10M) {
+        this.$message.error("上传文件大小不能超过 10MB!");
+      } else {
+        //否则加载效果出现
+        this.fullscreenLoading = true;
+      }
+      return isLt10M;
+    },
+
+    //限制选择文件数量一个
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，请先删除下方文件,重新选择`);
+    },
+
+    //http-request:覆盖默认的上传行为
+    importFile(files) {
+      var sentenceList = [];
+      //loading图显示正在解析
+      this.loadingText = "正在解析";
+      //
+      var fileReader = new FileReader();
+      //加载图显示
+      this.dataForms.loading = true;
+      // 以二进制方式打开文件
+      fileReader.readAsBinaryString(files.file);
+      fileReader.onload = (ev) => {
+        try {
+          var data = ev.target.result,
+              workbook = XLSX.read(data, {
+                type: "binary",
+              }); // 以二进制流方式读取得到整份excel表格对象
+        } catch (e) {
+          this.$message.error("文件类型不正确");
+          this.dataForms.loading = false;
+          this.$refs.upload.clearFiles();
+          this.fullscreenLoading = false;
+          return;
+        }
+        // 表格的表格范围，可用于判断表头是否数量是否正确
+        var fromTo = "";
+        // 遍历每张表读取
+        for (var sheet in workbook.Sheets) {
+          if (workbook.Sheets.hasOwnProperty(sheet)) {
+            // 获取当前表格的范围
+            fromTo = workbook.Sheets[sheet]["!ref"];
+            // 将当前表格转换为 JSON 格式的数组
+            var sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+            // 将每行数据转换为符合后端实体类的对象
+            sheetData.forEach((row, index) => {
+              var sentence = {
+                type: row.type,
+                content: row.content,
+                source: row.source,
+              };
+              // 将创建的对象添加到sentenceList数组中
+              sentenceList.push(sentence);
+            });
+            break; // 如果只取第一张表，就取消注释这行
+          }
+        }
+        this.loadingText = "正在上传...";
+
+        //请求后台
+        addExcelSentence(sentenceList)
+            .then(res => {
+              if (res && res.code === 200) {
+                this.loadingText = "";
+                this.$message({
+                  message: "上传成功",
+                  type: "success",
+                  duration: 1500,
+                });
+                this.dataForms.loading = false; // 加载状态结束
+                this.$refs.upload.clearFiles(); // 清除上传组件中选择的文件
+                this.fullscreenLoading = false; // 加载状态结束
+                this.getData(); // 刷新列表数据
+              } else {
+                this.$message.error(res.msg);
+                this.$refs.upload.clearFiles();
+                this.dataForms.loading = false;
+                this.fullscreenLoading = false;
+                this.getData(); // 刷新列表数据
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error.toString());
+              this.$refs.upload.clearFiles();
+              this.dataForms.loading = false;
+              this.fullscreenLoading = false;
+            })
+      }
+    },
   },
   computed:{
     typeLabel(){
