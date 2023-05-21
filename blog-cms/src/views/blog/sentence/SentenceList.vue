@@ -38,7 +38,7 @@
 
       <!--模板下载-->
       <el-col :span="2">
-        <el-button type="primary" size="small" @click="downloadTemplate">模板下载</el-button>
+        <el-button type="primary" size="small" @click="downloadTemplate" :disabled="isDownloading">下载模板</el-button>
       </el-col>
     </el-row>
 
@@ -163,6 +163,7 @@ export default {
       },
       fullscreenLoading: false, // 加载中
       loadingText: "正在上传...",
+      isDownloading: false, // 模板是否正在下载
     }
   },
   created() {
@@ -373,9 +374,27 @@ export default {
       }
     },
 
-    // 从七牛云下载模板
+    // 下载模板
     downloadTemplate() {
+      if (this.isDownloading) {
+        return; // 如果正在下载，则不执行下载逻辑
+      }
+      // 从localStorage中获取上次下载的时间戳
+      const lastDownloadTime = localStorage.getItem('lastDownloadTime');
+      const currentTime = Date.now();
+      if (lastDownloadTime && currentTime - lastDownloadTime < 60000) {
+        // 如果在一分钟内已经下载过，则不执行下载逻辑
+        return;
+      }
+      this.isDownloading = true;
+      // 执行下载逻辑
       window.location.href = 'http://qianniu.waylon1024.cn/blog_downloadTemplate/sentence.xlsx';
+      // 将当前时间戳保存到localStorage
+      localStorage.setItem('lastDownloadTime', currentTime);
+      // 一分钟后重置下载状态
+      setTimeout(() => {
+        this.isDownloading = false;
+      }, 60000);
     },
 
   },
@@ -398,7 +417,17 @@ export default {
         }
       }
     },
-  }
+  },
+  mounted() {
+    // 在页面加载完成后，检查上次下载的时间戳
+    const lastDownloadTime = localStorage.getItem('lastDownloadTime');
+    const currentTime = Date.now();
+    if (lastDownloadTime && currentTime - lastDownloadTime < 60000) {
+      // 如果在一分钟内已经下载过，则禁用下载按钮
+      this.isDownloading = true;
+    }
+  },
+
 }
 </script>
 
