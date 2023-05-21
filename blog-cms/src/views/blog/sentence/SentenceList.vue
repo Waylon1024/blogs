@@ -41,8 +41,33 @@
         <el-button type="primary" size="small" @click="downloadTemplate" :disabled="isDownloading">下载模板</el-button>
       </el-col>
 
+      <!-- 批量删除 -->
       <el-col :span="2">
-        <el-button type="danger" size="small" @click="batchDelete" :disabled="selectedRows.length === 0">批量删除</el-button>
+        <el-button type="danger" size="small" @click="batchDelete" :disabled="selectedRows.length === 0">批量删除
+        </el-button>
+      </el-col>
+
+    </el-row>
+
+    <!-- 筛选查询框 -->
+    <el-row :gutter="10">
+
+      <el-col :span="3" style="margin: 15px;">
+        <el-select v-model="queryInfo.type" placeholder="请输入要查询的类型" :clearable="true" style="width: 100%">
+          <el-option v-for="type in typeList" :key="type" :label="typeLabel(type)" :value="parseInt(type)"></el-option>
+        </el-select>
+      </el-col>
+
+      <el-col :span="3" style="margin: 15px;">
+        <el-input v-model="queryInfo.content" placeholder="请输入要查询的内容"></el-input>
+      </el-col>
+
+      <el-col :span="3" style="margin: 15px;">
+        <el-input v-model="queryInfo.source" placeholder="请输入要查询的来源"></el-input>
+      </el-col>
+
+      <el-col :span="2" style="margin: 15px;">
+        <el-button type="primary" @click="getData">条件查询</el-button>
       </el-col>
 
     </el-row>
@@ -59,7 +84,8 @@
           <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row)">编辑</el-button>
 
           <!--删除-->
-          <el-popconfirm title="确定删除吗？" icon="el-icon-delete" iconColor="red" @onConfirm="deleteSentenceById(scope.row.id)">
+          <el-popconfirm title="确定删除吗？" icon="el-icon-delete" iconColor="red"
+                         @onConfirm="deleteSentenceById(scope.row.id)">
             <el-button size="mini" type="danger" icon="el-icon-delete" slot="reference">删除</el-button>
           </el-popconfirm>
         </template>
@@ -143,6 +169,10 @@ export default {
   data() {
     return {
       queryInfo: {
+        // 条件查询数据
+        type: null,
+        content: '',
+        source: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -190,6 +220,7 @@ export default {
 
     // 获取美文数据
     getData() {
+      console.log(this.quer)
       sentenceApi.getData(this.queryInfo).then(res => {
         this.sentenceList = res.data.list
         this.total = res.data.total

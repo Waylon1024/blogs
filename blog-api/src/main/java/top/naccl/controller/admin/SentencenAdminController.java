@@ -27,17 +27,17 @@ public class SentencenAdminController {
     SentenceService sentenceService;
 
     /**
-     * 获取博客标签列表
+     * 获取美文列表
      *
-     * @param pageNum  页码
-     * @param pageSize 每页个数
      * @return
      */
-    @GetMapping("/sentences")
-    public Result sentences(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
-        String orderBy = "id desc";
+    @OperationLogger("获取美文列表")
+    @PostMapping("/sentences")
+    public Result sentences(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,@RequestBody Sentence sentence) {
+        String orderBy = "id desc";// 排序方式
         PageHelper.startPage(pageNum, pageSize, orderBy);
-        PageInfo<Sentence> pageInfo = new PageInfo<>(sentenceService.getSentencesList());
+        System.out.println(sentence.getType());
+        PageInfo<Sentence> pageInfo = new PageInfo<>(sentenceService.getSentencesList(sentence));
         return Result.ok("请求成功", pageInfo);
     }
 
@@ -46,6 +46,7 @@ public class SentencenAdminController {
      *
      * @return
      */
+    @OperationLogger("获取美文类型列表")
     @GetMapping("/sentencesTypeList")
     public Result getSentencesTypeList() {
         List<Integer> sentencesTypeList = sentenceService.getSentencesTypeList();

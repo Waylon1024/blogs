@@ -36,7 +36,19 @@
     </select>
 
     <select id="getSentencesList" resultMap="sentence">
-        select * from sentence;
+        select * from sentence
+        where 1 = 1
+        <if test="req != null">
+            <if test="req.type != null and req.type != ''">
+                and type = #{req.type}
+            </if>
+            <if test="req.content != null">
+                and content like concat('%', #{req.content}, '%')
+            </if>
+            <if test="req.source != null">
+                and source like concat('%', #{req.source}, '%')
+            </if>
+        </if>
     </select>
 
     <select id="getSentencesTypeList" resultType="java.lang.Integer">

@@ -23,8 +23,8 @@ public class SentenceService {
         return sentence;
     }
 
-    public List<Sentence> getSentencesList() {
-        List<Sentence> sentenceList = sentenceMapper.getSentencesList();
+    public List<Sentence> getSentencesList(Sentence sentence) {
+        List<Sentence> sentenceList = sentenceMapper.getSentencesList(sentence);
         return sentenceList;
     }
 

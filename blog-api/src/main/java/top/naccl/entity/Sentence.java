@@ -1,9 +1,8 @@
 package top.naccl.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.*;
+import top.naccl.config.StringEmptyToNullDeserializer;
 
 import java.util.Date;
 
@@ -13,15 +12,21 @@ import java.util.Date;
  * 备注:
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Sentence {
     private Integer id;
+
     private String creator = "Waylon";
+
     private Integer type;
+
+    @JsonDeserialize(using = StringEmptyToNullDeserializer.class)
     private String content;
+
+    @JsonDeserialize(using = StringEmptyToNullDeserializer.class)
     private String source;
+
     private Date createTime;
+
     private Date updateTime;
 }

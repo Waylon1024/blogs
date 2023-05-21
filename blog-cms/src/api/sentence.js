@@ -3,12 +3,15 @@ import axios from '@/util/request'
 export function getData(queryInfo) {
     return axios({
         url: 'sentences',
-        method: 'GET',
+        method: 'POST',
         params: {
-            ...queryInfo
-        }
-    })
+            pageNum: queryInfo.pageNum,
+            pageSize: queryInfo.pageSize
+        },
+        data: queryInfo,
+    });
 }
+
 
 export function getType() {
     return axios({

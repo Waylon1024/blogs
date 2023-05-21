@@ -19,7 +19,7 @@ public interface SentenceMapper {
 
     List<Sentence> getSentence();
 
-    List<Sentence> getSentencesList();
+    List<Sentence> getSentencesList(@Param("req") Sentence sentence);
 
     List<Integer> getSentencesTypeList();
 
