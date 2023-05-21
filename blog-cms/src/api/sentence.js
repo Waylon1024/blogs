@@ -27,3 +27,13 @@ export function editSentence(form) {
         }
     })
 }
+
+export function addSingleSentence(form){
+    return axios({
+        url: 'addSingleSentence',
+        method: 'POST',
+        data:{
+            ...form
+        }
+    })
+}

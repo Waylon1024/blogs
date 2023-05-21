@@ -3,7 +3,6 @@ package top.naccl.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.naccl.entity.Sentence;
-import top.naccl.exception.PersistenceException;
 import top.naccl.mapper.SentenceMapper;
 
 import java.util.List;
@@ -32,10 +31,11 @@ public class SentenceService {
         return sentenceMapper.getSentencesTypeList();
     }
 
-    public void editSentence(Sentence sentence) {
-        if ( sentenceMapper.editSentence(sentence)!=1){
-            throw new PersistenceException("美文更新失败");
-        }
+    public Integer editSentence(Sentence sentence) {
+        return sentenceMapper.editSentence(sentence);
+    }
 
+    public Integer addSingleSentence(Sentence sentence) {
+        return sentenceMapper.addSingleSentence(sentence);
     }
 }

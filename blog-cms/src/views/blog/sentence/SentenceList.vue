@@ -3,7 +3,7 @@
     <!--添加-->
     <el-row :gutter="10">
       <el-col :span="6">
-        <el-button type="primary" size="small" icon="el-icon-plus" @click="addDialogVisible=true">添加美文</el-button>
+        <el-button type="primary" size="small" icon="el-icon-plus" @click="addDialogVisible=true">单条添加美文</el-button>
       </el-col>
     </el-row>
 
@@ -33,23 +33,26 @@
     <el-dialog title="添加标签" width="50%" :visible.sync="addDialogVisible" :close-on-click-modal="false" @close="addDialogClosed">
       <!--内容主体-->
       <el-form :model="addForm" :rules="formRules" ref="addFormRef" label-width="80px">
-        <el-form-item label="标签名称" prop="name">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="标签颜色">
-          <el-select v-model="addForm.color" placeholder="请选择颜色" :clearable="true" style="width: 100%">
-            <el-option v-for="item in colors" :key="item.value" :label="item.label" :value="item.value">
-              <span style="float: left; width: 100px;">{{ item.label }}</span>
-              <span style="float: left; width: 100px; height: inherit" :class="`me-${item.value}`"></span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-            </el-option>
+
+        <el-form-item label="美文类型" prop="type">
+          <el-select v-model="addForm.type" placeholder="请选择类型" :clearable="true" style="width: 100%">
+            <el-option v-for="type in typeList" :key="type" :label="typeLabel(type)" :value="type"></el-option>
           </el-select>
         </el-form-item>
+
+        <el-form-item label="美文内容" prop="content">
+          <el-input v-model="addForm.content"></el-input>
+        </el-form-item>
+
+        <el-form-item label="美文来源" prop="source">
+          <el-input v-model="addForm.source"></el-input>
+        </el-form-item>
+
       </el-form>
       <!--底部-->
       <span slot="footer">
 				<el-button @click="addDialogVisible=false">取 消</el-button>
-				<el-button type="primary" @click="addTag">确 定</el-button>
+				<el-button type="primary" @click="addSingleSentence">确 定</el-button>
 			</span>
     </el-dialog>
 
@@ -86,7 +89,7 @@
 
 <script>
 import Breadcrumb from "@/components/Breadcrumb";
-import {getData,getType,editSentence} from '@/api/sentence'
+import {getData,getType,editSentence,addSingleSentence} from '@/api/sentence'
 
 export default {
   name: "SentenceList",
@@ -107,8 +110,9 @@ export default {
       addDialogVisible: false,
       editDialogVisible: false,
       addForm: {
-        name: '',
-        color: ''
+        type: '',
+        content: '',
+        source: '',
       },
       editForm: {},
       formRules: {
@@ -155,18 +159,19 @@ export default {
       this.queryInfo.pageNum = newPage
       this.getData()
     },
+    // 关闭添加弹窗窗口时，恢复内容为空
     addDialogClosed() {
-      this.addForm.color = ''
+      this.addForm.type = ''
       this.$refs.addFormRef.resetFields()
     },
     editDialogClosed() {
       this.editForm = {}
       this.$refs.editFormRef.resetFields()
     },
-    addTag() {
+    addSingleSentence() {
       this.$refs.addFormRef.validate(valid => {
         if (valid) {
-          addTag(this.addForm).then(res => {
+          addSingleSentence(this.addForm).then(res => {
             this.msgSuccess(res.msg)
             this.addDialogVisible = false
             this.getData()

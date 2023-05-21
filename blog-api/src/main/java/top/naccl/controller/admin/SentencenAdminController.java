@@ -3,7 +3,6 @@ package top.naccl.controller.admin;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import top.naccl.annotation.OperationLogger;
 import top.naccl.entity.Sentence;
@@ -42,34 +41,48 @@ public class SentencenAdminController {
 
     /**
      * 获取美文类型列表
+     *
      * @return
      */
     @GetMapping("/sentencesTypeList")
-    public Result getSentencesTypeList(){
-        List<Integer> sentencesTypeList= sentenceService.getSentencesTypeList();
-        return Result.ok("获取美文类型列表成功",sentencesTypeList);
+    public Result getSentencesTypeList() {
+        List<Integer> sentencesTypeList = sentenceService.getSentencesTypeList();
+        return Result.ok("获取美文类型列表成功", sentencesTypeList);
     }
 
     /**
      * 修改美文
+     *
      * @param sentence
      * @return
      */
     @OperationLogger("修改美文")
     @PutMapping("/editSentence")
-    public Result editSentence(@RequestBody Sentence sentence){
-         return getResult(sentence,"update");
-    }
-
-    private Result getResult(Sentence sentence, String type) {
-        if (StringUtils.isEmpty(sentence.getContent())||StringUtils.isEmpty(String.valueOf(sentence.getType()))){
+    public Result editSentence(@RequestBody Sentence sentence) {
+        if (StringUtils.isEmpty(sentence.getContent()) || StringUtils.isEmpty(String.valueOf(sentence.getType()))) {
             return Result.error("参数不能为空");
         }
-        if ("update".equals(type)){
-            sentenceService.editSentence(sentence);
-            return Result.ok("更新成功");
-        }else {
-            return Result.error();
+        Integer integer = sentenceService.editSentence(sentence);
+        if (integer == 0) {
+            return Result.error("美文更新失败");
         }
+        return Result.ok("美文更新成功");
     }
+
+    /**
+     * 单条添加美文
+     *
+     * @param sentence
+     * @return
+     */
+    @OperationLogger("单条添加美文")
+    @PostMapping("/addSingleSentence")
+    public Result addSingleSentence(@RequestBody Sentence sentence) {
+        Integer integer = sentenceService.addSingleSentence(sentence);
+        if (integer == 0) {
+            return Result.error("美文插入失败");
+        }
+        return Result.ok("美文插入成功");
+    }
+
 }

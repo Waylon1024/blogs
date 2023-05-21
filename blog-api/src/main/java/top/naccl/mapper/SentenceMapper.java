@@ -22,5 +22,7 @@ public interface SentenceMapper {
     List<Integer> getSentencesTypeList();
 
     int editSentence(Sentence sentence);
+
+    int addSingleSentence(Sentence sentence);
 }
 

@@ -8,6 +8,10 @@
         <result property="source" column="source"/>
     </resultMap>
 
+    <insert id="addSingleSentence">
+        insert into sentence (type, content, source, create_time, update_time) values (#{type}, #{content}, #{source}, now(), now())
+    </insert>
+
     <select id="getSentence" resultMap="sentence">
         SELECT * FROM sentence ORDER BY RAND() LIMIT 1;
     </select>
@@ -21,6 +25,6 @@
     </select>
 
     <update id="editSentence">
-        update sentence set type=#{type},content=#{content},source=#{source} where id=#{id}
+        update sentence set type=#{type}, content=#{content}, source=#{source}, update_Time=now() where id = #{id}
     </update>
 </mapper>
