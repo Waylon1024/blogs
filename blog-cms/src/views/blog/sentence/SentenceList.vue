@@ -40,14 +40,19 @@
       <el-col :span="2">
         <el-button type="primary" size="small" @click="downloadTemplate" :disabled="isDownloading">下载模板</el-button>
       </el-col>
+
+      <el-col :span="2">
+        <el-button type="danger" size="small" @click="batchDelete" :disabled="selectedRows.length === 0">批量删除</el-button>
+      </el-col>
+
     </el-row>
 
-    <el-table :data="sentenceList">
+    <el-table :data="sentenceList" :row-key="getRowKey" ref="table" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50"></el-table-column>
       <el-table-column label="类型" width="120" prop="type" :formatter="formatType"></el-table-column>
       <el-table-column label="内容" width="550" prop="content"></el-table-column>
       <el-table-column label="来源" width="420" prop="source"></el-table-column>
-
       <el-table-column label="操作">
         <template v-slot="scope">
           <!--编辑-->
@@ -57,7 +62,6 @@
           <el-popconfirm title="确定删除吗？" icon="el-icon-delete" iconColor="red" @onConfirm="deleteSentenceById(scope.row.id)">
             <el-button size="mini" type="danger" icon="el-icon-delete" slot="reference">删除</el-button>
           </el-popconfirm>
-
         </template>
       </el-table-column>
     </el-table>
@@ -130,7 +134,7 @@
 </template>
 
 <script>
-import {getData, getType, editSentence, addSingleSentence, addExcelSentence, deleteSentenceById} from '@/api/sentence'
+import * as sentenceApi from '@/api/sentence';
 import * as XLSX from "xlsx";
 
 export default {
@@ -169,6 +173,7 @@ export default {
       fullscreenLoading: false, // 加载中
       loadingText: "正在上传...",
       isDownloading: false, // 模板是否正在下载
+      selectedRows: [], // 被选中的行数据
     }
   },
   created() {
@@ -178,14 +183,14 @@ export default {
   methods: {
     // 获取美文类型列表
     getType() {
-      getType().then(res => {
+      sentenceApi.getType().then(res => {
         this.typeList = res.data
       })
     },
 
     // 获取美文数据
     getData() {
-      getData(this.queryInfo).then(res => {
+      sentenceApi.getData(this.queryInfo).then(res => {
         this.sentenceList = res.data.list
         this.total = res.data.total
       })
@@ -227,7 +232,7 @@ export default {
     addSingleSentence() {
       this.$refs.addFormRef.validate(valid => {
         if (valid) {
-          addSingleSentence(this.addForm).then(res => {
+          sentenceApi.addSingleSentence(this.addForm).then(res => {
             this.msgSuccess(res.msg)
             this.addDialogVisible = false
             this.getData()
@@ -239,7 +244,7 @@ export default {
     editSentence() {
       this.$refs.editFormRef.validate(valid => {
         if (valid) {
-          editSentence(this.editForm).then(res => {
+          sentenceApi.editSentence(this.editForm).then(res => {
             this.msgSuccess(res.msg)
             this.editDialogVisible = false
             this.getData()
@@ -255,7 +260,7 @@ export default {
 
     // 根据id删除对应的美文
     deleteSentenceById(id) {
-      deleteSentenceById(id).then(res => {
+      sentenceApi.deleteSentenceById(id).then(res => {
         this.msgSuccess(res.msg)
         this.getData()
       })
@@ -350,7 +355,7 @@ export default {
         this.loadingText = "正在上传...";
 
         //请求后台
-        addExcelSentence(sentenceList)
+        sentenceApi.addExcelSentence(sentenceList)
             .then(res => {
               if (res && res.code === 200) {
                 this.loadingText = "";
@@ -401,6 +406,33 @@ export default {
       setTimeout(() => {
         this.isDownloading = false;
       }, 60000);
+    },
+
+    // 处理行选中的变化
+    handleSelectionChange(rows) {
+      this.selectedRows = rows;
+    },
+
+    // 获取行的唯一标识
+    getRowKey(row) {
+      return row.id;
+    },
+
+    // 批量删除
+    batchDelete() {
+      const selectedIds = this.selectedRows.map(row => row.id);
+      sentenceApi.deleteSentencesByIds(selectedIds)
+          .then(() => {
+            this.$message.success('批量删除成功');
+            this.getData();
+            // 清空选中的行数据
+            this.selectedRows = [];
+            // 取消表格中的勾选状态
+            this.$refs.table.clearSelection();
+          })
+          .catch(error => {
+            this.$message.error('删除失败: ' + error.toString());
+          });
     },
 
   },

@@ -30,5 +30,7 @@ public interface SentenceMapper {
     Integer addExcelSentence(ArrayList<Sentence> sentenceList);
 
     Integer deleteSentenceById(Long id);
+
+    Integer deleteSentencesByIds(List<Long> idList);
 }
 

@@ -55,3 +55,11 @@ export function deleteSentenceById(id) {
         }
     })
 }
+
+export function deleteSentencesByIds(selectedIds){
+    return axios({
+        url: 'deleteSentencesByIds',
+        method: 'DELETE',
+        data: selectedIds,
+    })
+}

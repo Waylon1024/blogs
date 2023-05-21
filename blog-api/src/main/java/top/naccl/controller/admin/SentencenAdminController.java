@@ -112,9 +112,25 @@ public class SentencenAdminController {
     @DeleteMapping("/deleteSentenceById")
     public Result deleteSentenceById(@RequestParam Long id) {
         Integer integer = sentenceService.deleteSentenceById(id);
-        if (integer == 0){
+        if (integer == 0) {
             return Result.error("删除美文失败");
         }
         return Result.ok("成功删除美文");
+    }
+
+    /**
+     * 根据id批量删除美文
+     *
+     * @param idList
+     * @return
+     */
+    @OperationLogger("根据id批量删除美文")
+    @DeleteMapping("/deleteSentencesByIds")
+    public Result deleteSentencesByIds(@RequestBody List<Long> idList) {
+        Integer integer = sentenceService.deleteSentencesByIds(idList);
+        if (integer == 0) {
+            return Result.error("批量删除失败");
+        }
+        return Result.ok("批量删除成功");
     }
 }

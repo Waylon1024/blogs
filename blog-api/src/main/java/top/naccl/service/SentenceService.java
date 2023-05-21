@@ -47,4 +47,8 @@ public class SentenceService {
     public Integer deleteSentenceById(Long id) {
         return sentenceMapper.deleteSentenceById(id);
     }
+
+    public Integer deleteSentencesByIds(List<Long> idList) {
+        return sentenceMapper.deleteSentencesByIds(idList);
+    }
 }
