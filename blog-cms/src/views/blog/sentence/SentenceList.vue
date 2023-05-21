@@ -54,13 +54,15 @@
     </el-table>
 
     <!--分页-->
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pageNum"
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                   :current-page="queryInfo.pageNum"
                    :page-sizes="[10, 20, 30, 50]" :page-size="queryInfo.pageSize" :total="total"
                    layout="total, sizes, prev, pager, next, jumper" background>
     </el-pagination>
 
     <!--添加标签对话框-->
-    <el-dialog title="添加标签" width="50%" :visible.sync="addDialogVisible" :close-on-click-modal="false" @close="addDialogClosed">
+    <el-dialog title="添加标签" width="50%" :visible.sync="addDialogVisible" :close-on-click-modal="false"
+               @close="addDialogClosed">
       <!--内容主体-->
       <el-form :model="addForm" :rules="formRules" ref="addFormRef" label-width="80px">
 
@@ -87,7 +89,8 @@
     </el-dialog>
 
     <!--编辑标签对话框-->
-    <el-dialog title="编辑标签" width="50%" :visible.sync="editDialogVisible" :close-on-click-modal="false" @close="editDialogClosed">
+    <el-dialog title="编辑标签" width="50%" :visible.sync="editDialogVisible" :close-on-click-modal="false"
+               @close="editDialogClosed">
       <!--内容主体-->
 
       <el-form :model="editForm" :rules="formRules" ref="editFormRef" label-width="80px">
@@ -123,8 +126,7 @@ import * as XLSX from "xlsx";
 
 export default {
   name: "SentenceList",
-  components: {
-  },
+  components: {},
   data() {
     return {
       queryInfo: {
@@ -146,7 +148,7 @@ export default {
       editForm: {},
       formRules: {
         name: [
-            {required: true, message: '请输入美文内容', trigger: 'blur'},
+          {required: true, message: '请输入美文内容', trigger: 'blur'},
         ]
       },
       // 批量添加
@@ -164,11 +166,12 @@ export default {
   },
   methods: {
     // 获取美文类型列表
-    getType(){
-      getType().then(res=>{
+    getType() {
+      getType().then(res => {
         this.typeList = res.data
       })
     },
+
     // 获取美文数据
     getData() {
       getData(this.queryInfo).then(res => {
@@ -176,34 +179,40 @@ export default {
         this.total = res.data.total
       })
     },
-    formatType(row){
-      if (row.type === 1){
+
+    formatType(row) {
+      if (row.type === 1) {
         return '诗词';
-      }else if (row.type === 5){
+      } else if (row.type === 5) {
         return '自创';
       }
       // 如果type的值不为1，可以根据需要设置其他情况的显示内容或返回原始值
       return row.type;
     },
+
     //监听 pageSize 改变事件
     handleSizeChange(newSize) {
       this.queryInfo.pageSize = newSize
       this.getData()
     },
+
     //监听页码改变事件
     handleCurrentChange(newPage) {
       this.queryInfo.pageNum = newPage
       this.getData()
     },
+
     // 关闭添加弹窗窗口时，恢复内容为空
     addDialogClosed() {
       this.addForm.type = ''
       this.$refs.addFormRef.resetFields()
     },
+
     editDialogClosed() {
       this.editForm = {}
       this.$refs.editFormRef.resetFields()
     },
+
     addSingleSentence() {
       this.$refs.addFormRef.validate(valid => {
         if (valid) {
@@ -215,6 +224,7 @@ export default {
         }
       })
     },
+
     editSentence() {
       this.$refs.editFormRef.validate(valid => {
         if (valid) {
@@ -226,10 +236,12 @@ export default {
         }
       })
     },
+
     showEditDialog(row) {
       this.editForm = {...row}
       this.editDialogVisible = true
     },
+    // 根据id删除对应东风美文
     deleteTagById(id) {
       deleteTagById(id).then(res => {
         this.msgSuccess(res.msg)
@@ -299,6 +311,17 @@ export default {
             fromTo = workbook.Sheets[sheet]["!ref"];
             // 将当前表格转换为 JSON 格式的数组
             var sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
+            // 检查列数是否正确
+            var expectedColumnNames = ["type", "content", "source"];
+            // 获取sheetData数组中的第一行数据
+            var columnNames = Object.keys(sheetData[0]);
+            if (columnNames.length !== expectedColumnNames.length || !expectedColumnNames.every(name => columnNames.includes(name))) {
+              this.$message.error("Excel文档列名或列数不正确，请检查");
+              this.$refs.upload.clearFiles();
+              this.dataForms.loading = false;
+              this.fullscreenLoading = false;
+              return;
+            }
             // 将每行数据转换为符合后端实体类的对象
             sheetData.forEach((row, index) => {
               var sentence = {
@@ -344,17 +367,24 @@ export default {
             })
       }
     },
+
   },
-  computed:{
-    typeLabel(){
-      return(type)=>{
-        switch (type){
-          case 1: return '诗词';
-          case 2: return 'XX';
-          case 3: return 'XX';
-          case 4: return 'XX';
-          case 5: return '自创';
-          default: return '';
+  computed: {
+    typeLabel() {
+      return (type) => {
+        switch (type) {
+          case 1:
+            return '诗词';
+          case 2:
+            return 'XX';
+          case 3:
+            return 'XX';
+          case 4:
+            return 'XX';
+          case 5:
+            return '自创';
+          default:
+            return '';
         }
       }
     },
@@ -366,12 +396,15 @@ export default {
 .el-button + span {
   margin-left: 10px;
 }
- .el-dropdown {
-   vertical-align: top;
- }
+
+.el-dropdown {
+  vertical-align: top;
+}
+
 .el-dropdown + .el-dropdown {
   margin-left: 15px;
 }
+
 .el-icon-arrow-down {
   font-size: 12px;
 }
