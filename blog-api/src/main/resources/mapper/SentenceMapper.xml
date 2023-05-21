@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.naccl.mapper.SentenceMapper">
+<mapper namespace="top.waylon.mapper.SentenceMapper">
 
-    <resultMap id="sentence" type="top.naccl.entity.Sentence">
+    <resultMap id="sentence" type="top.waylon.entity.Sentence">
         <id property="type" column="type"/>
         <result property="content" column="content"/>
         <result property="source" column="source"/>
