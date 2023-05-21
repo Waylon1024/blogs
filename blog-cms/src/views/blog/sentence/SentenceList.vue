@@ -35,6 +35,11 @@
           </el-button>
         </el-upload>
       </el-col>
+
+      <!--模板下载-->
+      <el-col :span="2">
+        <el-button type="primary" size="small" @click="downloadTemplate">模板下载</el-button>
+      </el-col>
     </el-row>
 
     <el-table :data="sentenceList">
@@ -366,6 +371,11 @@ export default {
               this.fullscreenLoading = false;
             })
       }
+    },
+
+    // 从七牛云下载模板
+    downloadTemplate() {
+      window.location.href = 'http://qianniu.waylon1024.cn/blog_downloadTemplate/sentence.xlsx';
     },
 
   },
