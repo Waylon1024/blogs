@@ -38,7 +38,6 @@ public class SentencenAdminController {
     public Result sentences(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody Sentence sentence) {
         String orderBy = "id desc";// 排序方式
         PageHelper.startPage(pageNum, pageSize, orderBy);
-        System.out.println(sentence.getType());
         PageInfo<Sentence> pageInfo = new PageInfo<>(sentenceService.getSentencesList(sentence));
         return Result.ok("请求成功", pageInfo);
     }

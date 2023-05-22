@@ -9,8 +9,6 @@ import top.waylon.service.RedisService;
 @SpringBootApplication
 @EnableScheduling
 public class BlogApiApplication {
-    @Autowired
-    private RedisService redisService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BlogApiApplication.class, args);
