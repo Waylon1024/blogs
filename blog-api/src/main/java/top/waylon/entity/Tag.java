@@ -1,9 +1,6 @@
 package top.waylon.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +11,7 @@ import java.util.List;
  * @Date: 2020-07-27
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Tag {
 	private Long id;
 	private String name;//标签名称

@@ -1,19 +1,12 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 自定义爱好
- * @Author: Naccl
- * @Date: 2020-08-09
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Favorite {
 	private String title;
 	private String content;

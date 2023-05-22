@@ -18,7 +18,7 @@ import top.waylon.model.vo.PageResult;
 import top.waylon.model.vo.Result;
 import top.waylon.model.vo.SearchBlog;
 import top.waylon.service.BlogService;
-import top.waylon.service.impl.UserServiceImpl;
+import top.waylon.service.UserService;
 import top.waylon.util.JwtUtils;
 import top.waylon.util.StringUtils;
 
@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * @Description: 博客相关
- * @Author: Naccl
+ * @Author: waylon
  * @Date: 2020-08-12
  */
 @RestController
@@ -34,7 +34,7 @@ public class BlogController {
 	@Autowired
     BlogService blogService;
 	@Autowired
-    UserServiceImpl userService;
+	UserService userService;
 
 	/**
 	 * 按置顶、创建时间排序 分页查询博客简要信息列表

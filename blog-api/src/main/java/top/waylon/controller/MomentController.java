@@ -17,12 +17,12 @@ import top.waylon.enums.VisitBehavior;
 import top.waylon.model.vo.PageResult;
 import top.waylon.model.vo.Result;
 import top.waylon.service.MomentService;
-import top.waylon.service.impl.UserServiceImpl;
+import top.waylon.service.UserService;
 import top.waylon.util.JwtUtils;
 
 /**
  * @Description: 动态
- * @Author: Naccl
+ * @Author: waylon
  * @Date: 2020-08-25
  */
 @RestController
@@ -30,7 +30,7 @@ public class MomentController {
 	@Autowired
     MomentService momentService;
 	@Autowired
-    UserServiceImpl userService;
+	UserService userService;
 
 	/**
 	 * 分页查询动态List

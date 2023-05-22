@@ -1,9 +1,6 @@
 package top.waylon.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 关于我
@@ -11,9 +8,7 @@ import lombok.ToString;
  * @Date: 2020-08-31
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class About {
 	private Long id;
 	private String nameEn;

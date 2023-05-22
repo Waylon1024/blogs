@@ -17,7 +17,7 @@ import top.waylon.model.vo.PageComment;
 import top.waylon.model.vo.PageResult;
 import top.waylon.model.vo.Result;
 import top.waylon.service.CommentService;
-import top.waylon.service.impl.UserServiceImpl;
+import top.waylon.service.UserService;
 import top.waylon.util.JwtUtils;
 import top.waylon.util.StringUtils;
 import top.waylon.util.comment.CommentUtils;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * @Description: 评论
- * @Author: Naccl
+ * @Author: waylon
  * @Date: 2020-08-15
  */
 @RestController
@@ -37,7 +37,7 @@ public class CommentController {
 	@Autowired
     CommentService commentService;
 	@Autowired
-    UserServiceImpl userService;
+	UserService userService;
 	@Autowired
     CommentUtils commentUtils;
 

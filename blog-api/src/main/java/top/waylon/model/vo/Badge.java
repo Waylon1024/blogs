@@ -1,19 +1,12 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: GitHub徽标
- * @Author: Naccl
- * @Date: 2020-08-09
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Badge {
 	private String title;
 	private String url;

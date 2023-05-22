@@ -1,9 +1,6 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,13 +8,9 @@ import java.util.List;
 
 /**
  * @Description: 页面评论
- * @Author: Naccl
- * @Date: 2020-08-15
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class PageComment {
 	private Long id;
 	private String nickname;//昵称

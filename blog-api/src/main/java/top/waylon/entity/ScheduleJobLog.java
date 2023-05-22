@@ -1,9 +1,6 @@
 package top.waylon.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,9 +10,7 @@ import java.util.Date;
  * @Date: 2020-11-01
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class ScheduleJobLog {
 	private Long logId;//日志id
 	private Long jobId;//任务id

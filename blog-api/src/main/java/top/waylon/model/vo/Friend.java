@@ -1,19 +1,12 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 友链VO
- * @Author: Naccl
- * @Date: 2020-09-08
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Friend {
 	private String nickname;//昵称
 	private String description;//描述

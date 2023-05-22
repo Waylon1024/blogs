@@ -1,9 +1,6 @@
 package top.waylon.model.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import top.waylon.entity.Category;
 import top.waylon.entity.Tag;
 import top.waylon.entity.User;
@@ -14,13 +11,9 @@ import java.util.List;
 
 /**
  * @Description: 博客DTO
- * @Author: Naccl
- * @Date: 2020-08-27
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Blog {
 	private Long id;
 	private String title;//文章标题

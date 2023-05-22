@@ -1,9 +1,6 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import top.waylon.entity.Category;
 import top.waylon.entity.Tag;
 
@@ -13,13 +10,9 @@ import java.util.List;
 
 /**
  * @Description: 博客简要信息
- * @Author: Naccl
- * @Date: 2020-08-08
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class BlogInfo {
 	private Long id;
 	private String title;//文章标题

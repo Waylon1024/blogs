@@ -1,19 +1,12 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 关键字搜索博客
- * @Author: Naccl
- * @Date: 2020-09-06
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class SearchBlog {
 	private Long id;
 	private String title;

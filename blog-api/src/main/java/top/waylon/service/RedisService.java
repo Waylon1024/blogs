@@ -1,64 +1,137 @@
 package top.waylon.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 import top.waylon.model.vo.BlogInfo;
 import top.waylon.model.vo.PageResult;
+import top.waylon.util.JacksonUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-public interface RedisService {
-	PageResult<BlogInfo> getBlogInfoPageResultByHash(String hash, Integer pageNum);
+@Service
+public class RedisService {
+	@Autowired
+	RedisTemplate jsonRedisTemplate;
 
-	void saveKVToHash(String hash, Object key, Object value);
+	public PageResult<BlogInfo> getBlogInfoPageResultByHash(String hash, Integer pageNum) {
+		if (jsonRedisTemplate.opsForHash().hasKey(hash, pageNum)) {
+			Object redisResult = jsonRedisTemplate.opsForHash().get(hash, pageNum);
+			PageResult<BlogInfo> pageResult = JacksonUtils.convertValue(redisResult, PageResult.class);
+			return pageResult;
+		} else {
+			return null;
+		}
+	}
 
-	void saveMapToHash(String hash, Map map);
+	public void saveKVToHash(String hash, Object key, Object value) {
+		jsonRedisTemplate.opsForHash().put(hash, key, value);
+	}
 
-	Map getMapByHash(String hash);
+	public void saveMapToHash(String hash, Map map) {
+		jsonRedisTemplate.opsForHash().putAll(hash, map);
+	}
 
-	Object getValueByHashKey(String hash, Object key);
+	public Map getMapByHash(String hash) {
+		return jsonRedisTemplate.opsForHash().entries(hash);
+	}
 
-	void incrementByHashKey(String hash, Object key, int increment);
 
-	void deleteByHashKey(String hash, Object key);
+	public Object getValueByHashKey(String hash, Object key) {
+		return jsonRedisTemplate.opsForHash().get(hash, key);
+	}
 
-	<T> List<T> getListByValue(String key);
+	public void incrementByHashKey(String hash, Object key, int increment) {
+		if (increment < 0) {
+			throw new RuntimeException("递增因子必须大于0");
+		}
+		jsonRedisTemplate.opsForHash().increment(hash, key, increment);
+	}
 
-	<T> void saveListToValue(String key, List<T> list);
+	public void deleteByHashKey(String hash, Object key) {
+		jsonRedisTemplate.opsForHash().delete(hash, key);
+	}
 
-	<T> Map<String, T> getMapByValue(String key);
+	public <T> List<T> getListByValue(String key) {
+		List<T> redisResult = (List<T>) jsonRedisTemplate.opsForValue().get(key);
+		return redisResult;
+	}
 
-	<T> void saveMapToValue(String key, Map<String, T> map);
+	public <T> void saveListToValue(String key, List<T> list) {
+		jsonRedisTemplate.opsForValue().set(key, list);
+	}
 
-	<T> T getObjectByValue(String key, Class t);
+	public <T> Map<String, T> getMapByValue(String key) {
+		Map<String, T> redisResult = (Map<String, T>) jsonRedisTemplate.opsForValue().get(key);
+		return redisResult;
+	}
 
-	void incrementByKey(String key, int increment);
+	public <T> void saveMapToValue(String key, Map<String, T> map) {
+		jsonRedisTemplate.opsForValue().set(key, map);
+	}
 
-	void saveObjectToValue(String key, Object object);
+	public <T> T getObjectByValue(String key, Class t) {
+		Object redisResult = jsonRedisTemplate.opsForValue().get(key);
+		T object = (T) JacksonUtils.convertValue(redisResult, t);
+		return object;
+	}
 
-	void saveValueToSet(String key, Object value);
+	public void incrementByKey(String key, int increment) {
+		if (increment < 0) {
+			throw new RuntimeException("递增因子必须大于0");
+		}
+		jsonRedisTemplate.opsForValue().increment(key, increment);
+	}
 
-	int countBySet(String key);
+	public void saveObjectToValue(String key, Object object) {
+		jsonRedisTemplate.opsForValue().set(key, object);
+	}
 
-	void deleteValueBySet(String key, Object value);
+	public void saveValueToSet(String key, Object value) {
+		jsonRedisTemplate.opsForSet().add(key, value);
+	}
 
-	boolean hasValueInSet(String key, Object value);
+	public int countBySet(String key) {
+		return jsonRedisTemplate.opsForSet().size(key).intValue();
+	}
 
-	void deleteCacheByKey(String key);
+	public void deleteValueBySet(String key, Object value) {
+		jsonRedisTemplate.opsForSet().remove(key, value);
+	}
 
-	boolean hasKey(String key);
+	public boolean hasValueInSet(String key, Object value) {
+		return jsonRedisTemplate.opsForSet().isMember(key, value);
+	}
 
-	void expire(String key, long time);
+	public void deleteCacheByKey(String key) {
+		jsonRedisTemplate.delete(key);
+	}
 
-	// 保存所有预览图到redis
-	void saveFirstPicture(String key,String filename);
+	public boolean hasKey(String key) {
+		return jsonRedisTemplate.hasKey(key);
+	}
 
-	// 保存有效的预览图到redis
-    void saveEffectFirstPicture(String key, String filename);
+	public void expire(String key, long time) {
+		jsonRedisTemplate.expire(key, time, TimeUnit.SECONDS);
+	}
 
-    // 获取set中的value值
-	Set<String> getFirstPicture(String key);
+	public void saveFirstPicture(String key, String filename) {
+		jsonRedisTemplate.opsForSet().add(key, filename);
+	}
 
-	// 获取两个key的差集
-	Set<String> getDiff(String allFirstPicture, String effectFirstPicture);
+	public void saveEffectFirstPicture(String key, String filename) {
+		jsonRedisTemplate.opsForSet().add(key, filename);
+	}
+
+	public Set<String> getFirstPicture(String key) {
+		return jsonRedisTemplate.opsForSet().members(key);
+	}
+
+	public Set<String> getDiff(String allFirstPicture, String effectFirstPicture) {
+		return jsonRedisTemplate.opsForSet().difference(allFirstPicture,effectFirstPicture);
+	}
+
 }

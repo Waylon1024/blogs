@@ -1,9 +1,6 @@
 package top.waylon.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 访问记录
@@ -11,9 +8,7 @@ import lombok.ToString;
  * @Date: 2021-02-23
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class VisitRecord {
 	private Long id;
 	private Integer pv;//访问量

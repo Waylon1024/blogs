@@ -1,21 +1,14 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 /**
  * @Description: 分页结果
- * @Author: Naccl
- * @Date: 2020-08-08
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class PageResult<T> {
 	private Integer totalPage;//总页数
 	private List<T> list;//数据

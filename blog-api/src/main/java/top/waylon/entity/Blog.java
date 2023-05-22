@@ -1,9 +1,6 @@
 package top.waylon.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,9 +12,7 @@ import java.util.List;
  * @Date: 2020-07-26
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Blog {
 	private Long id;
 	private String title;//文章标题

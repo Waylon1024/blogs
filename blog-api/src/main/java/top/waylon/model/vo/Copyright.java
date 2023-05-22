@@ -1,19 +1,12 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: copyright
- * @Author: Naccl
- * @Date: 2020-08-09
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Copyright {
 	private String title;
 	private String siteName;

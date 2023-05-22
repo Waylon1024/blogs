@@ -1,22 +1,15 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @Description: 侧边栏资料卡
- * @Author: Naccl
- * @Date: 2020-08-09
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Introduction {
 	private String avatar;
 	private String name;

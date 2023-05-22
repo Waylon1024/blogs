@@ -1,21 +1,14 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
 /**
  * @Description: 随机博客
- * @Author: Naccl
- * @Date: 2020-08-17
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class RandomBlog {
 	private Long id;
 	private String title;//文章标题

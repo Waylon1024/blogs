@@ -1,19 +1,12 @@
 package top.waylon.model.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 受保护文章密码DTO
- * @Author: Naccl
- * @Date: 2020-09-05
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class BlogPassword {
 	private Long blogId;
 	private String password;

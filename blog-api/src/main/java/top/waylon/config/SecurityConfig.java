@@ -11,7 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.waylon.service.LoginLogService;
-import top.waylon.service.impl.UserServiceImpl;
+import top.waylon.service.UserService;
 
 /**
  * @Description: Spring Security配置类
@@ -21,7 +21,7 @@ import top.waylon.service.impl.UserServiceImpl;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	UserServiceImpl userService;
+	UserService userService;
 	@Autowired
 	LoginLogService loginLogService;
 	@Autowired

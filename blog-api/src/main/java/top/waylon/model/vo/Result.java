@@ -1,20 +1,13 @@
 package top.waylon.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @Description: 封装响应结果
- * @Author: Naccl
- * @Date: 2020-07-19
  */
 
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class Result {
 	private Integer code;
 	private String msg;

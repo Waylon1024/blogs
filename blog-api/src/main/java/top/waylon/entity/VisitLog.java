@@ -1,9 +1,6 @@
 package top.waylon.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,9 +10,7 @@ import java.util.Date;
  * @Date: 2020-12-04
  */
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class VisitLog {
 	private Long id;
 	private String uuid;//访客标识码
