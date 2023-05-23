@@ -43,8 +43,9 @@
 
       <!-- 批量删除 -->
       <el-col :span="2">
-        <el-button type="danger" size="small" @click="batchDelete" :disabled="selectedRows.length === 0">批量删除
-        </el-button>
+        <el-popconfirm title="确定删除所选项吗？" icon="el-icon-delete" icon-color="red" @onConfirm="batchDelete">
+          <el-button size="mini" type="danger" icon="el-icon-delete" slot="reference" :disabled="selectedRows.length === 0">批量删除</el-button>
+        </el-popconfirm>
       </el-col>
 
     </el-row>
