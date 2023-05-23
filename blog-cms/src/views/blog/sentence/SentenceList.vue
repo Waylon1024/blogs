@@ -48,28 +48,18 @@
       </el-col>
 
     </el-row>
-
+    
     <!-- 筛选查询框 -->
-    <el-row :gutter="10">
-
-      <el-col :span="3" style="margin: 15px;">
-        <el-select v-model="queryInfo.type" placeholder="请输入要查询的类型" :clearable="true" style="width: 100%">
-          <el-option v-for="type in typeList" :key="type" :label="typeLabel(type)" :value="parseInt(type)"></el-option>
-        </el-select>
+    <el-row>
+      <el-col :span="8" style="margin: 5px;">
+        <el-input v-model="queryInfo.source" placeholder="请输入来源" @keyup.native.enter="search" size="small" style="min-width: 500px; margin-top: 5px;"></el-input>
+        <el-input placeholder="请输入内容" v-model="queryInfo.content" :clearable="true" @clear="search" @keyup.native.enter="search" size="small" style="min-width: 500px">
+          <el-select v-model="queryInfo.type" slot="prepend" placeholder="请选择类型" :clearable="true" @change="search" style="width: 160px">
+            <el-option v-for="type in typeList" :key="type" :label="typeLabel(type)" :value="parseInt(type)"></el-option>
+          </el-select>
+          <el-button slot="append" icon="el-icon-search" @click="getData"></el-button>
+        </el-input>
       </el-col>
-
-      <el-col :span="3" style="margin: 15px;">
-        <el-input v-model="queryInfo.content" placeholder="请输入要查询的内容"></el-input>
-      </el-col>
-
-      <el-col :span="3" style="margin: 15px;">
-        <el-input v-model="queryInfo.source" placeholder="请输入要查询的来源"></el-input>
-      </el-col>
-
-      <el-col :span="2" style="margin: 15px;">
-        <el-button type="primary" @click="getData">条件查询</el-button>
-      </el-col>
-
     </el-row>
 
     <el-table :data="sentenceList" :row-key="getRowKey" ref="table" @selection-change="handleSelectionChange">
