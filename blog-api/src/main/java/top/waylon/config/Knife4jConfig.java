@@ -15,9 +15,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Knife4jConfig {
 
     @Bean
-    public Docket api() {
+    public Docket adminApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .groupName("后台管理相关接口")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("top.waylon.controller.admin"))
                 .paths(PathSelectors.any())
